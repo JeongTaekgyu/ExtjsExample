@@ -9,7 +9,7 @@ Ext.onReady(function(){
 			xtype : 'grid',
 			plugins : 'cellediting',
 			columns : [{
-				text : '텍스트10',
+				text : '텍스트1',
 				dataIndex : 'text1',
 				editor : {	// text를 수정할 수 있는 속성
 					xtype : 'textfield'
