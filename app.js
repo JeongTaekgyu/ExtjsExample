@@ -1,5 +1,5 @@
-// 17강
-Ext.onReady(function(){
+// 17강 그리그 조회,등록,수정,삭제
+/*Ext.onReady(function(){
 	Ext.create("Ext.panel.Panel",{
 		width: 500,
 		height : 500,
@@ -60,8 +60,8 @@ Ext.onReady(function(){
 					//console.log("~~~",btn.up("grid"));
 					// 1. store 찾기
 					// Extjs는 컴포넌트를 찾을 때 up(컴포넌트명 or itemId) / down 으로 찾는다
-					/* 버튼 컴포넌트를 클릭하면 핸들러의 첫번째 파라미터는 자기자신의 컴포넌트이다. 즉, this랑 같은거다	
-					*/
+					// 버튼 컴포넌트를 클릭하면 핸들러의 첫번째 파라미터는 자기자신의 컴포넌트이다. 즉, this랑 같은거다	
+
 					var storeI = btn.up("grid").getStore();	// "grid" 에서 store를 찾는다
 					// 레코드는 fields명하고 동일하게 한다. -> 반ㄷ시 그래야만 하나?
 					var newRec  = {
@@ -101,6 +101,76 @@ Ext.onReady(function(){
 			bbar : {	// 하단 bar
 				xtype : 'pagingtoolbar',
 				displayInfo : true
+			}
+		}]
+	})
+})*/
+
+
+// 18강. ExtJS Ajax 클래스 이해하기
+Ext.onReady(function(){
+	/*Ext.Ajax.request({
+		url : 'http://localhost:8080/paging.jsp',
+		method : 'POST',
+		params : {	// 어떤 데이터를 파라미터로 서버에 보낼지 설정
+			//key : value
+			start : 10,
+			limit : 20
+		},
+		success : function(response){	// 서버에서 응답을 받았을 때
+			console.log("success", Ext.decode(response.responseText));
+		},
+		failure : function(response){	// 서버에서 응답을 못 받았을 때 여기에서 값을 받는다
+			console.log("fail",response.status);
+		}
+	})*/
+	Ext.create("Ext.panel.Panel",{
+		width : 500,
+		height : 500,
+		renderTo : Ext.getBody(),
+		layout : 'fit',
+		items : [{
+			xtype : 'grid',
+			listeners : {
+				boxready : function(obj){ // 항상 대부분의 파라미터는 해당 객체를 의미한다
+					// boxready는 grid가 생성되고 표출이 되기 전 ajax 콜을 사용한다 -> 그 다음 json 코드로 값을 받아온다(success에서)
+					Ext.Ajax.request({
+						url : 'http://localhost:8080/paging.jsp',
+						method : 'POST',
+						params : {	// 어떤 데이터를 파라미터로 서버에 보낼지 설정
+							//key : value
+							start : 10,
+							limit : 20
+						},
+						success : function(response){	// 서버에서 응답을 받았을 때
+							var result = Ext.decode(response.responseText);
+							console.log("result",result);
+							//console.log("success", Ext.decode(response.responseText));
+							
+							// 여기서 obj는 그리드 자기자신
+							console.log("~~~ : ",obj.getStore());
+							var store = obj.getStore();
+							store.loadData(result.data);
+						},
+						failure : function(response){	// 서버에서 응답을 못 받았을 때 여기에서 값을 받는다
+							console.log("fail",response.status);
+						}
+					})
+				}
+			},
+			columns : [{
+				text : '시',
+				dataIndex : 'si'
+			},{
+				text : '군',
+				dataIndex : 'gungu'
+			},{
+				text : '동',
+				dataIndex : 'dong'
+			}],
+			store : {
+				fields : ['si', 'gungu', 'dong'],
+				data : []
 			}
 		}]
 	})
