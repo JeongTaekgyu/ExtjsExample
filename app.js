@@ -1,3 +1,91 @@
+// 20강 데이터바인딩 및 MVVM 구조이해
+Ext.onReady(function(){
+	Ext.create("Ext.panel.Panel",{
+		width : 500,
+		height : 500,
+		renderTo : Ext.getBody(),
+		layout : 'fit',
+		items : [{
+			// 이 컴포넌트를 별도로 define해서 우리만의 xtype으로 만들거다
+			xtype : 'sampleGrid',
+
+		}]
+	})
+})
+
+// 18강. ExtJS Ajax 클래스 이해하기
+/*Ext.onReady(function(){
+	Ext.Ajax.request({
+		url : 'http://localhost:8080/paging.jsp',
+		method : 'POST',
+		params : {	// 어떤 데이터를 파라미터로 서버에 보낼지 설정
+			//key : value
+			start : 10,
+			limit : 20
+		},
+		success : function(response){	// 서버에서 응답을 받았을 때
+			console.log("success", Ext.decode(response.responseText));
+		},
+		failure : function(response){	// 서버에서 응답을 못 받았을 때 여기에서 값을 받는다
+			console.log("fail",response.status);
+		}
+	})
+})*/
+
+/*Ext.onReady(function(){
+	Ext.create("Ext.panel.Panel",{
+		width : 500,
+		height : 500,
+		renderTo : Ext.getBody(),
+		layout : 'fit',
+		items : [{
+			xtype : 'grid',
+			listeners : {
+				boxready : function(obj){ // 항상 대부분의 파라미터는 해당 객체를 의미한다
+					// boxready는 grid가 생성되고 표출이 되기 전 ajax 콜을 사용한다 -> 그 다음 json 코드로 값을 받아온다(success에서)
+					Ext.Ajax.request({
+						url : 'http://localhost:8080/paging.jsp',
+						method : 'POST',
+						params : {	// 어떤 데이터를 파라미터로 서버에 보낼지 설정
+							//key : value
+							start : 10,
+							limit : 20
+						},
+						success : function(response){	// 서버에서 응답을 받았을 때
+							var result = Ext.decode(response.responseText);
+							console.log("result",result);
+							//console.log("success", Ext.decode(response.responseText));
+							
+							// 여기서 obj는 그리드 자기자신
+							console.log("~~~ : ",obj.getStore());
+							var store = obj.getStore();
+							store.loadData(result.data);	// load와 loaddata의 차이는?
+						},
+						failure : function(response){	// 서버에서 응답을 못 받았을 때 여기에서 값을 받는다
+							console.log("fail",response.status);
+						}
+					})
+				}
+			},
+			columns : [{
+				text : '시',
+				dataIndex : 'si'
+			},{
+				text : '군',
+				dataIndex : 'gungu'
+			},{
+				text : '동',
+				dataIndex : 'dong'
+			}],
+			store : {
+				fields : ['si', 'gungu', 'dong'],
+				data : []
+			}
+		}]
+	})
+})*/
+
+
 // 17강 그리그 조회,등록,수정,삭제
 /*Ext.onReady(function(){
 	Ext.create("Ext.panel.Panel",{
@@ -105,73 +193,3 @@
 		}]
 	})
 })*/
-
-
-// 18강. ExtJS Ajax 클래스 이해하기
-Ext.onReady(function(){
-	/*Ext.Ajax.request({
-		url : 'http://localhost:8080/paging.jsp',
-		method : 'POST',
-		params : {	// 어떤 데이터를 파라미터로 서버에 보낼지 설정
-			//key : value
-			start : 10,
-			limit : 20
-		},
-		success : function(response){	// 서버에서 응답을 받았을 때
-			console.log("success", Ext.decode(response.responseText));
-		},
-		failure : function(response){	// 서버에서 응답을 못 받았을 때 여기에서 값을 받는다
-			console.log("fail",response.status);
-		}
-	})*/
-	Ext.create("Ext.panel.Panel",{
-		width : 500,
-		height : 500,
-		renderTo : Ext.getBody(),
-		layout : 'fit',
-		items : [{
-			xtype : 'grid',
-			listeners : {
-				boxready : function(obj){ // 항상 대부분의 파라미터는 해당 객체를 의미한다
-					// boxready는 grid가 생성되고 표출이 되기 전 ajax 콜을 사용한다 -> 그 다음 json 코드로 값을 받아온다(success에서)
-					Ext.Ajax.request({
-						url : 'http://localhost:8080/paging.jsp',
-						method : 'POST',
-						params : {	// 어떤 데이터를 파라미터로 서버에 보낼지 설정
-							//key : value
-							start : 10,
-							limit : 20
-						},
-						success : function(response){	// 서버에서 응답을 받았을 때
-							var result = Ext.decode(response.responseText);
-							console.log("result",result);
-							//console.log("success", Ext.decode(response.responseText));
-							
-							// 여기서 obj는 그리드 자기자신
-							console.log("~~~ : ",obj.getStore());
-							var store = obj.getStore();
-							store.loadData(result.data);
-						},
-						failure : function(response){	// 서버에서 응답을 못 받았을 때 여기에서 값을 받는다
-							console.log("fail",response.status);
-						}
-					})
-				}
-			},
-			columns : [{
-				text : '시',
-				dataIndex : 'si'
-			},{
-				text : '군',
-				dataIndex : 'gungu'
-			},{
-				text : '동',
-				dataIndex : 'dong'
-			}],
-			store : {
-				fields : ['si', 'gungu', 'dong'],
-				data : []
-			}
-		}]
-	})
-})
